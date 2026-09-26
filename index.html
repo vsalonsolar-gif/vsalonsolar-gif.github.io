@@ -2,40 +2,433 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="obw4HaK4PKOA8Q7ozUeAwvI2KsWQzbqhUxFps67ScB8" />
-<title>RetroBicio Stream Control</title>
-<meta name="description" content="RetroBicio Stream Control: tu chat de Twitch, YouTube y TikTok en un solo lugar, con lectura por voz y alertas.">
-<link rel="stylesheet" href="estilo.css">
+<meta name="google-site-verification" content="pBb3CnLJyHaxutBowIVTnH_Ub_lOhe0cCq5D6iKoY8w" />
+<title>RetroBicio Stream Control — tu chat, tus alertas y tu copresentador con IA</title>
+<meta name="description" content="Aplicación gratuita para Windows que reúne el chat de Twitch, YouTube y TikTok, lo lee en voz alta, crea alertas retro animadas y tiene a BicioBot, un copresentador con inteligencia artificial.">
+<link rel="canonical" href="https://retrobicio.co/">
+<link rel="icon" href="img/favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RetroBicio Stream Control">
+<meta property="og:description" content="Chat de Twitch, YouTube y TikTok en un solo lugar, alertas retro animadas y un copresentador con IA. Gratis para Windows.">
+<meta property="og:image" content="https://retrobicio.co/img/disenador.webp">
+<meta property="og:url" content="https://retrobicio.co/">
+<meta name="theme-color" content="#0b0e1f">
+<style>
+  @font-face { font-family:"Pixel"; src:url("fonts/PressStart2P.ttf") format("truetype"); font-display:swap; }
+  :root { --bg:#07091a; --bg2:#0d1026; --card:#12162e; --line:#262c52; --text:#eef0fa; --dim:#a7adc8; --v:#8b5cf6; --v2:#c026d3; --b:#60a5fa; --y:#ffd84a; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--text); font:17px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; overflow-x:hidden; }
+  a { color:#c4b5fd; }
+  img { max-width:100%; display:block; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 20px; }
+  .pixel { font-family:"Pixel", monospace; letter-spacing:1px; }
+  .grad { background:linear-gradient(90deg, #c084fc, #f472b6 45%, #60a5fa); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  /* stars and scanlines behind everything */
+  .sky { position:fixed; inset:0; z-index:-2; background:
+      radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent), radial-gradient(1px 1px at 72% 12%, #fff9 50%, transparent),
+      radial-gradient(1.5px 1.5px at 35% 62%, #c4b5fd 50%, transparent), radial-gradient(1px 1px at 88% 48%, #fff7 50%, transparent),
+      radial-gradient(1px 1px at 55% 30%, #fff6 50%, transparent), radial-gradient(1.5px 1.5px at 20% 85%, #93c5fd 50%, transparent),
+      radial-gradient(1px 1px at 92% 82%, #fff8 50%, transparent), radial-gradient(1px 1px at 6% 50%, #fff6 50%, transparent),
+      radial-gradient(ellipse at 20% 0%, #2b1a6388, transparent 55%), radial-gradient(ellipse at 90% 30%, #0e749055, transparent 50%), var(--bg);
+      animation:twinkle 6s ease-in-out infinite alternate; }
+  @keyframes twinkle { to { filter:brightness(1.35); } }
+  .scan { position:fixed; inset:0; z-index:50; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 1px, transparent 1px 3px); }
+
+  /* nav */
+  nav { position:sticky; top:0; z-index:40; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); background:rgba(7,9,26,.72); border-bottom:1px solid #1a1f40; }
+  nav .wrap { display:flex; align-items:center; gap:22px; height:64px; }
+  .brand { display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; font-weight:800; font-size:18px; }
+  .brand img { width:38px; height:38px; border-radius:10px; }
+  .brand b { color:#c084fc; }
+  nav .links { display:flex; gap:20px; margin-left:auto; }
+  nav .links a { color:var(--dim); text-decoration:none; font-size:15px; font-weight:600; }
+  nav .links a:hover { color:#fff; }
+  .btn { display:inline-flex; align-items:center; gap:10px; padding:13px 24px; border-radius:14px; font-weight:800; text-decoration:none; color:#fff; border:0; cursor:pointer;
+         transition:transform .15s, box-shadow .2s; font-size:17px; }
+  .btn:hover { transform:translateY(-2px); }
+  .btn.main { background:linear-gradient(90deg, #7c3aed, #c026d3); box-shadow:0 10px 30px #7c3aed66, inset 0 1px 0 #ffffff33; }
+  .btn.main:hover { box-shadow:0 14px 40px #c026d388; }
+  .btn.ghost { background:#ffffff0d; border:1px solid #ffffff26; }
+  .btn.small { padding:9px 16px; font-size:14px; border-radius:11px; }
+
+  /* hero */
+  .hero { position:relative; padding:80px 0 60px; overflow:hidden; }
+  .hero .wrap { display:grid; grid-template-columns:1.05fr 1fr; gap:48px; align-items:center; }
+  .tag { display:inline-block; font-size:11px; color:var(--y); background:#ffd84a14; border:1px solid #ffd84a44; padding:9px 12px; border-radius:8px; margin-bottom:22px; }
+  h1 { font-size:clamp(38px, 5.2vw, 64px); line-height:1.08; margin:0 0 20px; font-weight:900; letter-spacing:-1px; }
+  .lead { font-size:20px; color:var(--dim); max-width:560px; margin:0 0 30px; }
+  .cta { display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+  .meta { margin-top:18px; color:var(--dim); font-size:14px; display:flex; flex-wrap:wrap; gap:8px 18px; }
+  .meta span::before { content:"✓ "; color:#4ade80; font-weight:800; }
+  .grid-floor { position:absolute; left:-10%; right:-10%; bottom:-40px; height:260px; z-index:-1; opacity:.55;
+                background-image:linear-gradient(#c026d355 1px, transparent 1px), linear-gradient(90deg, #c026d355 1px, transparent 1px);
+                background-size:60px 40px; transform:perspective(420px) rotateX(62deg); transform-origin:bottom; animation:floor 3s linear infinite;
+                mask-image:linear-gradient(to top, #000 30%, transparent); -webkit-mask-image:linear-gradient(to top, #000 30%, transparent); }
+  @keyframes floor { to { background-position:0 40px; } }
+  .screen { position:relative; border-radius:18px; padding:12px; background:linear-gradient(160deg, #2a2f5a, #12162e); box-shadow:0 30px 90px #000a, 0 0 0 1px #3a4175, 0 0 60px #7c3aed44;
+            transform:perspective(1400px) rotateY(-9deg) rotateX(3deg); transition:transform .5s; }
+  .screen:hover { transform:perspective(1400px) rotateY(0) rotateX(0); }
+  .screen img { border-radius:10px; }
+  .screen .dots { display:flex; gap:6px; margin:0 0 9px 4px; } .screen .dots i { width:10px; height:10px; border-radius:50%; background:#ff5f57; }
+  .screen .dots i:nth-child(2) { background:#febc2e; } .screen .dots i:nth-child(3) { background:#28c840; }
+  .sprite { position:absolute; image-rendering:pixelated; z-index:3; filter:drop-shadow(0 6px 10px #0008); }
+  .s1 { width:56px; height:56px; left:-26px; top:18%; animation:bob 2.4s ease-in-out infinite; }
+  .s2 { width:48px; height:48px; right:-18px; top:-18px; animation:bob 2.9s .4s ease-in-out infinite; }
+  .s3 { width:52px; height:52px; right:10%; bottom:-24px; animation:bob 2.6s .8s ease-in-out infinite; }
+  @keyframes bob { 50% { transform:translateY(-14px); } }
+  .press { position:absolute; left:50%; bottom:-46px; transform:translateX(-50%); font-size:12px; color:var(--y); animation:blink 1s steps(1) infinite; white-space:nowrap; }
+  @keyframes blink { 50% { opacity:0; } }
+
+  /* platforms */
+  .plats { border-top:1px solid #1a1f40; border-bottom:1px solid #1a1f40; background:#0b0e22aa; padding:18px 0; }
+  .plats .wrap { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:14px 38px; color:var(--dim); font-weight:700; }
+  .plats img { width:28px; height:28px; border-radius:7px; }
+  .plats span { display:flex; align-items:center; gap:10px; }
+
+  section { padding:90px 0; }
+  .kicker { font-size:11px; color:#f472b6; margin-bottom:14px; }
+  h2 { font-size:clamp(30px, 3.6vw, 44px); line-height:1.15; margin:0 0 16px; font-weight:900; letter-spacing:-.5px; }
+  .sub { color:var(--dim); font-size:19px; max-width:720px; margin:0 0 44px; }
+  .center { text-align:center; } .center .sub { margin-left:auto; margin-right:auto; }
+
+  /* stats */
+  .stats { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:-30px; }
+  .stat { background:linear-gradient(160deg, #171b3a, #10142a); border:1px solid var(--line); border-radius:16px; padding:22px; text-align:center; }
+  .stat b { display:block; font-size:34px; font-weight:900; }
+  .stat span { color:var(--dim); font-size:14px; }
+
+  /* features */
+  .feats { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+  .feat { position:relative; background:linear-gradient(160deg, #151a36, #0f1329); border:1px solid var(--line); border-radius:18px; padding:26px; transition:transform .2s, border-color .2s, box-shadow .2s; overflow:hidden; }
+  .feat:hover { transform:translateY(-4px); border-color:#7c3aed; box-shadow:0 18px 40px #7c3aed26; }
+  .feat .ic { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:16px;
+              background:linear-gradient(135deg, var(--c1, #7c3aed), var(--c2, #c026d3)); box-shadow:0 8px 24px color-mix(in srgb, var(--c1, #7c3aed) 40%, transparent); }
+  .feat h3 { margin:0 0 8px; font-size:19px; }
+  .feat p { margin:0; color:var(--dim); font-size:15px; }
+
+  /* showcase */
+  .show { display:grid; grid-template-columns:1fr 1.15fr; gap:56px; align-items:center; }
+  .show.rev { grid-template-columns:1.15fr 1fr; }
+  .show.rev .txt { order:2; }
+  .hero .wrap > *, .show > *, .two > * { min-width:0; }
+  .show ul, .ticks { list-style:none; padding:0; margin:22px 0 0; }
+  .show li, .ticks li { padding:8px 0 8px 34px; position:relative; color:#dfe2f0; }
+  .show li::before, .ticks li::before { content:"▶"; position:absolute; left:4px; top:9px; font-size:13px; color:var(--y); }
+  .frame { border-radius:16px; overflow:hidden; border:1px solid #3a4175; box-shadow:0 30px 70px #000a, 0 0 50px #7c3aed22; background:#0b0e1f; }
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:24px 0 0; }
+  .tabs button { font:600 14px "Segoe UI", sans-serif; color:var(--dim); background:#ffffff0a; border:1px solid #ffffff1f; border-radius:999px; padding:8px 14px; cursor:pointer; }
+  .tabs button.on { color:#fff; background:linear-gradient(90deg, #7c3aed, #c026d3); border-color:transparent; }
+  .fade { transition:opacity .35s; }
+  .phone { width:min(300px, 80%); margin:0 auto; border-radius:40px; padding:12px; background:#111; box-shadow:0 0 0 2px #333, 0 30px 80px #000c, 0 0 60px #c026d333; position:relative; }
+  .phone img { border-radius:30px; }
+  .phone::before { content:""; position:absolute; top:22px; left:50%; width:90px; height:22px; margin-left:-45px; background:#111; border-radius:12px; z-index:2; }
+  .bubbles { display:flex; flex-direction:column; gap:12px; }
+  .bub { max-width:88%; padding:12px 16px; border-radius:16px; background:#171b3a; border:1px solid var(--line); font-size:15px; }
+  .bub b { color:var(--c, #c084fc); }
+  .bub.bot { align-self:flex-end; background:linear-gradient(135deg, #3b1f7a, #1e2a6e); border-color:#7c3aed; }
+  .bub .who { font-size:12px; color:var(--dim); display:block; margin-bottom:2px; }
+
+  /* steps */
+  .steps { display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; counter-reset:s; }
+  .step { background:#10142a; border:1px solid var(--line); border-radius:18px; padding:28px; position:relative; }
+  .step::before { counter-increment:s; content:counter(s); font-family:"Pixel"; font-size:20px; color:#0b0e1f; background:var(--y);
+                  width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; box-shadow:4px 4px 0 #b45309; }
+  .step h3 { margin:0 0 8px; } .step p { margin:0; color:var(--dim); font-size:15px; }
+
+  /* download */
+  .dl { position:relative; text-align:center; border-radius:28px; padding:64px 24px; overflow:hidden;
+        background:radial-gradient(ellipse at top, #3b1f7a, #10142a 70%); border:1px solid #4c3a9c; box-shadow:0 0 80px #7c3aed33; }
+  .dl h2 { margin-bottom:10px; }
+  .dl .note { color:var(--dim); font-size:14px; margin-top:22px; }
+  .dl .ver { font-size:11px; color:var(--y); margin-bottom:18px; }
+  .card { background:#10142a; border:1px solid var(--line); border-radius:18px; padding:28px 30px; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .kofi { display:flex; align-items:center; gap:20px; background:linear-gradient(90deg, #6d28d9, #9333ea 60%, #c026d3); border-radius:20px; padding:26px 30px; }
+  .kofi h3 { margin:0 0 4px; font-size:22px; } .kofi p { margin:0; color:#f3e8ff; }
+  .kofi .btn { background:#fff; color:#6d28d9; margin-left:auto; white-space:nowrap; }
+  details { border-bottom:1px solid var(--line); padding:14px 0; }
+  summary { cursor:pointer; font-weight:700; font-size:17px; }
+  details p { color:var(--dim); margin:10px 0 0; }
+  footer { border-top:1px solid #1a1f40; padding:40px 0 60px; color:var(--dim); font-size:14px; }
+  footer .wrap { display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between; }
+  .socials { display:flex; flex-wrap:wrap; gap:10px; }
+  .socials a { text-decoration:none; color:var(--dim); border:1px solid var(--line); border-radius:10px; padding:7px 12px; font-size:14px; }
+  .socials a:hover { color:#fff; border-color:#7c3aed; }
+  .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s, transform .7s; }
+  .reveal.in { opacity:1; transform:none; }
+
+  @media (max-width:900px) {
+    nav .links { display:none; }
+    .hero .wrap, .show, .show.rev, .two { grid-template-columns:1fr; }
+    .show.rev .txt { order:0; }
+    .feats, .steps { grid-template-columns:1fr 1fr; }
+    .stats { grid-template-columns:1fr 1fr; }
+    .screen { transform:none; }
+    .kofi { flex-direction:column; text-align:center; } .kofi .btn { margin:0; }
+  }
+  @media (max-width:560px) { .feats, .steps { grid-template-columns:1fr; } section { padding:64px 0; } nav .btn { display:none; } }
+  @media (prefers-reduced-motion:reduce) { *, *::before { animation:none !important; transition:none !important; } .reveal { opacity:1; transform:none; } }
+</style>
 </head>
 <body>
-<header>
-  <h1><span class="accent">RetroBicio</span> Stream Control</h1>
-  <p class="tagline">Tu chat, todas las plataformas, un solo lugar</p>
+<div class="sky"></div><div class="scan"></div>
+
+<nav><div class="wrap">
+  <a class="brand" href="#"><img src="img/logo.webp" alt="">RetroBicio <b>Stream Control</b></a>
+  <div class="links"><a href="#funciones">Funciones</a><a href="#alertas">Alertas</a><a href="#bicio">BicioBot IA</a><a href="#preguntas">Preguntas</a></div>
+  <a class="btn main small" href="#descargar">⬇ Descargar</a>
+</div></nav>
+
+<header class="hero">
+  <div class="grid-floor"></div>
+  <div class="wrap">
+    <div>
+      <div class="tag pixel">★ PARA STREAMERS RETRO ★</div>
+      <h1>Tu directo,<br><span class="grad">nivel leyenda.</span></h1>
+      <p class="lead">El chat de <b>Twitch</b>, <b>YouTube</b> y <b>TikTok</b> en una sola ventana, leído en voz alta. Alertas retro que puedes diseñar tú, shoutouts con clip y <b>BicioBot</b>, un copresentador con inteligencia artificial.</p>
+      <div class="cta">
+        <a class="btn main" href="#descargar">⬇ Descargar gratis para Windows</a>
+        <a class="btn ghost" href="#funciones">Ver qué hace ▸</a>
+      </div>
+      <div class="meta"><span>Gratis</span><span>Windows 10 y 11</span><span>Se actualiza solo</span><span>Sin crear cuentas</span></div>
+    </div>
+    <div style="position:relative">
+      <canvas class="sprite s1" data-s="moneda" width="16" height="16"></canvas>
+      <canvas class="sprite s2" data-s="estrella" width="16" height="16"></canvas>
+      <canvas class="sprite s3" data-s="corazon" width="16" height="16"></canvas>
+      <div class="screen"><div class="dots"><i></i><i></i><i></i></div>
+        <img src="img/disenador.webp" alt="El diseñador de alertas de RetroBicio: una alerta arcade con monedas y el nombre en arcoíris" width="1400" height="831"></div>
+      <div class="press pixel">PRESS START</div>
+    </div>
+  </div>
 </header>
-<main>
-  <section class="card">
-    <h2>¿Qué es?</h2>
-    <p>RetroBicio Stream Control es una aplicación de escritorio para Windows, hecha para la comunidad de RetroBicio. Reúne en una sola ventana el chat en vivo de <b>Twitch</b>, <b>YouTube</b> y <b>TikTok</b>, lee los mensajes en voz alta (texto a voz) y muestra las alertas del directo.</p>
-  </section>
-  <section class="card">
-    <h2>Funciones</h2>
-    <ul>
-      <li>Chat unificado de Twitch, YouTube y TikTok, con avatares, insignias y emotes.</li>
-      <li>Envío de mensajes al chat de Twitch y YouTube desde la aplicación.</li>
-      <li>Lectura del chat por voz con las voces instaladas en Windows.</li>
-      <li>Alertas de suscripciones, Super Chats, miembros, donaciones, regalos y nuevos seguidores.</li>
-      <li>Chat flotante y enlace para mostrar el chat en OBS.</li>
-    </ul>
-  </section>
-  <section class="card">
-    <h2>Uso de YouTube</h2>
-    <p>Cuando conectas YouTube, la aplicación te pide iniciar sesión con Google en tu navegador. Con tu autorización, RetroBicio Stream Control consulta el nombre, la foto y el número de suscriptores de tu canal, y envía al chat de tu directo los mensajes que tú escribes en la aplicación. RetroBicio nunca ve tu contraseña de Google.</p>
-    <p>Más detalles en la <a href="privacidad.html">Política de Privacidad</a> y las <a href="terminos.html">Condiciones del Servicio</a>.</p>
-  </section>
-</main>
-<footer>
-  <a href="privacidad.html">Política de Privacidad</a> · <a href="terminos.html">Condiciones del Servicio</a>
-  <p>Hecho para la comunidad 💜</p>
-</footer>
+
+<div class="plats"><div class="wrap">
+  <span><img src="img/twitch.svg" alt="">Twitch</span><span><img src="img/youtube.svg" alt="">YouTube</span><span><img src="img/tiktok.svg" alt="">TikTok</span>
+  <span>☕ Ko-fi</span><span>🎥 OBS</span><span>💬 Discord</span><span>📸 Instagram</span>
+</div></div>
+
+<section id="funciones">
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat"><b class="grad">3</b><span>plataformas en un solo chat</span></div>
+      <div class="stat"><b class="grad">7+</b><span>alertas retro animadas</span></div>
+      <div class="stat"><b class="grad">6</b><span>temas de shoutout</span></div>
+      <div class="stat"><b class="grad">IA</b><span>copresentador con voz</span></div>
+    </div>
+    <div class="center" style="margin-top:90px">
+      <div class="kicker pixel">▸ TODO EN UNO</div>
+      <h2>Todo lo que tu directo necesita</h2>
+      <p class="sub">Deja de abrir diez pestañas. RetroBicio junta tu chat, tus alertas, tus overlays y tu comunidad en un solo programa.</p>
+    </div>
+    <div class="feats">
+      <div class="feat reveal"><div class="ic">💬</div><h3>Chat unificado</h3><p>Twitch, YouTube y TikTok juntos, con fotos, insignias y emotes. Responde a todos desde un solo sitio.</p></div>
+      <div class="feat reveal" style="--c1:#0e7490;--c2:#22d3ee"><div class="ic">🔊</div><h3>Lectura por voz</h3><p>Tu chat en voz alta, con voces de Windows o de personajes. Tus espectadores eligen voz con un comando.</p></div>
+      <div class="feat reveal" style="--c1:#b45309;--c2:#f59e0b"><div class="ic">🤖</div><h3>BicioBot con IA</h3><p>Copresentador que habla contigo, ve tu juego, saluda, comenta las alertas y resume el directo.</p></div>
+      <div class="feat reveal" style="--c1:#be185d;--c2:#f472b6"><div class="ic">🚨</div><h3>Alertas retro</h3><p>Seguidores, subs, bits, Super Chats, regalos, raids y Ko-fi, con estilos de Mega Man X, Zelda, FF6, Kirby y más.</p></div>
+      <div class="feat reveal" style="--c1:#7c3aed;--c2:#60a5fa"><div class="ic">🎨</div><h3>Diseñador de alertas</h3><p>Crea las tuyas con línea de tiempo, sprites, partículas y sonido. Sin programar nada.</p></div>
+      <div class="feat reveal" style="--c1:#16a34a;--c2:#4ade80"><div class="ic">📣</div><h3>Shoutouts con clip</h3><p><b>!so @canal</b> y aparece su clip con uno de 6 temas: tele CRT, neón, carta holográfica…</p></div>
+      <div class="feat reveal" style="--c1:#0369a1;--c2:#38bdf8"><div class="ic">🪟</div><h3>Widget de chat</h3><p>Tu chat en OBS, vertical u horizontal, con 6 estilos, 10 efectos de entrada y la letra que quieras.</p></div>
+      <div class="feat reveal" style="--c1:#9333ea;--c2:#e879f9"><div class="ic">📱</div><h3>Anuncios automáticos</h3><p>Al empezar el directo avisa en Discord, X e Instagram con una historia hecha con el arte de tu juego.</p></div>
+      <div class="feat reveal" style="--c1:#ca8a04;--c2:#fde047"><div class="ic">🎡</div><h3>Puntos y ruleta</h3><p>Puntos por ver el directo, recompensas de Twitch, ruleta en pantalla y créditos finales animados.</p></div>
+      <div class="feat reveal" style="--c1:#dc2626;--c2:#fb7185"><div class="ic">✂️</div><h3>Shorts automáticos</h3><p>Cada clip se convierte en un vídeo vertical listo para TikTok, Reels y YouTube Shorts.</p></div>
+      <div class="feat reveal" style="--c1:#0f766e;--c2:#2dd4bf"><div class="ic">☕</div><h3>Ko-fi</h3><p>Donaciones, membresías y compras de Ko-fi con su alerta, agradecimiento por voz y puntos.</p></div>
+      <div class="feat reveal" style="--c1:#475569;--c2:#94a3b8"><div class="ic">🛟</div><h3>Seguro y al día</h3><p>Copias de seguridad automáticas, actualizaciones sin perder tu configuración y claves guardadas en Windows.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="alertas" style="background:linear-gradient(180deg, transparent, #0d102699 20%, #0d102699 80%, transparent)">
+  <div class="wrap show">
+    <div class="txt reveal">
+      <div class="kicker pixel">▸ DISEÑADOR DE ALERTAS</div>
+      <h2>Haz tus propias alertas <span class="grad">sin saber programar</span></h2>
+      <p class="sub" style="margin:0">Arrastra, anima y listo. Lo que ves en el diseñador es exactamente lo que sale en OBS.</p>
+      <ul>
+        <li>Línea de tiempo con fotogramas clave, como un editor de vídeo.</li>
+        <li>Animación rápida con un clic: entrar, rebotar, girar, temblar, latir…</li>
+        <li>Sprites retro incluidos, tus hojas de sprites, partículas y sonidos.</li>
+        <li>El nombre, la foto y la cantidad de cada alerta aparecen solos.</li>
+        <li>Resoluciones de consola (SNES) con píxeles nítidos, o Full HD.</li>
+      </ul>
+    </div>
+    <div class="reveal"><div class="frame"><img class="fade" id="dimg" src="img/disenador.webp" alt="Diseñador de alertas con línea de tiempo" width="1400" height="831" loading="lazy"></div>
+      <div class="tabs" id="dtabs"><button class="on" data-img="img/disenador.webp">🕹 Arcade retro</button><button data-img="img/disenador-hd.webp">🎉 Fiesta HD</button></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap show rev">
+    <div class="txt reveal">
+      <div class="kicker pixel">▸ SHOUTOUTS</div>
+      <h2>Presenta a otros canales <span class="grad">con estilo</span></h2>
+      <p class="sub" style="margin:0">Escribe <b>!so @canal</b> y RetroBicio busca su mejor clip, lo muestra en OBS, lo menciona en el chat y lo anuncia por voz. Y si te hacen raid, lo hace solo.</p>
+      <div class="tabs" id="stabs">
+        <button class="on" data-img="img/shoutout-crt.webp">📺 Tele retro</button><button data-img="img/shoutout-arcade.webp">🥊 ¡Nuevo retador!</button>
+        <button data-img="img/shoutout-carta.webp">🃏 Carta holográfica</button><button data-img="img/shoutout-neon.webp">💜 Neón</button>
+        <button data-img="img/shoutout-cine.webp">🎬 Cine</button><button data-img="img/shoutout-classic.webp">✨ Clásico</button>
+      </div>
+    </div>
+    <div class="reveal"><div class="frame"><img class="fade" id="simg" src="img/shoutout-crt.webp" alt="Tema de shoutout" width="960" height="540" loading="lazy"></div></div>
+  </div>
+</section>
+
+<section style="background:linear-gradient(180deg, transparent, #0d102699 20%, #0d102699 80%, transparent)">
+  <div class="wrap show">
+    <div class="txt reveal">
+      <div class="kicker pixel">▸ WIDGET DE CHAT</div>
+      <h2>Tu chat en pantalla, <span class="grad">a tu manera</span></h2>
+      <p class="sub" style="margin:0">Pega un enlace en OBS y personaliza todo en directo: los cambios se ven al momento.</p>
+      <ul>
+        <li>Vertical o en barra horizontal.</li>
+        <li>Burbuja, tarjeta, neón, caja RPG, cristal o solo texto.</li>
+        <li>Efectos de entrada: rebote, glitch, pixel 8-bit, explosión de estrellas…</li>
+        <li>Insignias, logo de la plataforma y foto de cada espectador.</li>
+      </ul>
+    </div>
+    <div class="reveal"><div class="frame"><img src="img/chat-widget.webp" alt="Estilos del widget de chat: burbuja, tarjeta y neón" width="1200" height="528" loading="lazy"></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap show rev">
+    <div class="txt reveal">
+      <div class="kicker pixel">▸ ANUNCIOS</div>
+      <h2>Avisa de tu directo <span class="grad">sin hacer nada</span></h2>
+      <p class="sub" style="margin:0">Cuando empiezas a transmitir, RetroBicio publica el aviso en Discord, X e Instagram con tus enlaces.</p>
+      <ul>
+        <li>BicioBot busca el arte oficial del juego que vas a jugar.</li>
+        <li>Si no es un juego, dibuja una imagen del tema con IA.</li>
+        <li>Crea una historia vertical con «¡DIRECTO HOY!» y tus canales.</li>
+      </ul>
+    </div>
+    <div class="reveal"><div class="phone"><img class="fade" id="pimg" src="img/historia.webp" alt="Historia de Instagram creada por BicioBot" width="540" height="960" loading="lazy"></div></div>
+  </div>
+</section>
+
+<section id="bicio" style="background:linear-gradient(180deg, transparent, #0d102699 20%, #0d102699 80%, transparent)">
+  <div class="wrap two" style="align-items:center;gap:56px">
+    <div class="reveal">
+      <div class="kicker pixel">▸ BICIOBOT IA</div>
+      <h2>Un copresentador que <span class="grad">nunca se cansa</span></h2>
+      <p class="sub" style="margin:0">BicioBot charla con tu comunidad, comenta lo que pasa en tu juego, agradece cada alerta con su propia voz y al terminar te deja un informe con ideas para crecer.</p>
+      <ul class="ticks">
+        <li>Habla contigo con la tecla F8.</li>
+        <li>Ve la pantalla del juego y la comenta.</li>
+        <li>Recuerda a tus espectadores habituales.</li>
+      </ul>
+    </div>
+    <div class="bubbles reveal">
+      <div class="bub" style="--c:#ff6b6b"><span class="who">Twitch</span><b>PixelKnight:</b> ¡Buenas! ¿Qué juego toca hoy? 🎮</div>
+      <div class="bub bot"><span class="who">🤖 BicioBot</span>¡Hola, PixelKnight! Hoy vamos con <b>Super Metroid</b>. Prepárate, que Ridley no perdona 😎</div>
+      <div class="bub" style="--c:#4dd0e1"><span class="who">YouTube</span><b>Laura Gamer:</b> Primera vez por aquí, ¡saludos!</div>
+      <div class="bub bot"><span class="who">🤖 BicioBot</span>¡Bienvenida, Laura! Ponte cómoda: aquí se viene a disfrutar de lo retro 💜</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="center"><div class="kicker pixel">▸ EN 3 PASOS</div><h2>Listo en cinco minutos</h2><p class="sub">Sin registrarte en ningún sitio ni pegar claves raras: un asistente te acompaña.</p></div>
+    <div class="steps">
+      <div class="step reveal"><h3>Descarga y abre</h3><p>Descomprime el .zip y abre <b>RetroBicio.exe</b>. No hace falta instalar nada.</p></div>
+      <div class="step reveal"><h3>Conecta tus canales</h3><p>El asistente te guía para conectar Twitch, YouTube y TikTok con sus páginas oficiales.</p></div>
+      <div class="step reveal"><h3>Añade las fuentes a OBS</h3><p>Copia los enlaces del chat, las alertas y los shoutouts en fuentes «Navegador». ¡A transmitir!</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="descargar" style="padding-top:20px">
+  <div class="wrap">
+    <div class="dl reveal">
+      <div class="ver pixel" id="ver">ÚLTIMA VERSIÓN</div>
+      <h2>Descarga <span class="grad">RetroBicio Stream Control</span></h2>
+      <p class="sub" style="margin:0 auto 30px">Gratis para Windows 10 y 11. Se actualiza solo y nunca pierde tu configuración.</p>
+      <a class="btn main" style="font-size:20px;padding:17px 34px" href="https://github.com/vsalonsolar-gif/vsalonsolar-gif.github.io/releases/latest/download/RetroBicio.zip">⬇ Descargar RetroBicio (.zip)</a>
+      <p class="note">Si Windows muestra «Windows protegió tu PC», pulsa <b>Más información</b> → <b>Ejecutar de todas formas</b>.</p>
+    </div>
+    <div class="kofi reveal" style="margin-top:24px">
+      <div style="font-size:44px">☕</div>
+      <div><h3>¿Te gusta RetroBicio?</h3><p>Es gratis y lo seguirá siendo. Si quieres apoyar el proyecto, invítame a un café.</p></div>
+      <a class="btn" href="https://ko-fi.com/retrobicio" target="_blank" rel="noopener">Apoya en Ko-fi</a>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas" style="padding-top:40px">
+  <div class="wrap two" style="gap:40px">
+    <div>
+      <div class="kicker pixel">▸ PREGUNTAS</div>
+      <h2>Preguntas frecuentes</h2>
+      <details><summary>¿Es gratis de verdad?</summary><p>Sí. RetroBicio es gratuito y sin publicidad. Las voces, la IA y BicioBot funcionan con el servidor de RetroBicio sin que tengas que registrar nada.</p></details>
+      <details><summary>¿Funciona con OBS y Streamlabs?</summary><p>Sí. El chat, las alertas, los shoutouts, la ruleta y los créditos son enlaces que se añaden como fuente «Navegador».</p></details>
+      <details><summary>¿Necesito un PC potente?</summary><p>No. RetroBicio es ligero; lo más pesado (voces e IA) se hace en internet.</p></details>
+      <details><summary>¿Se pierde mi configuración al actualizar?</summary><p>No. Las actualizaciones reemplazan solo el programa. Además, se hacen copias de seguridad automáticas cada día.</p></details>
+    </div>
+    <div class="card" style="align-self:start">
+      <h3 style="margin-top:0">Uso de YouTube</h3>
+      <p style="color:var(--dim)">Cuando conectas YouTube, la aplicación te pide iniciar sesión con Google en tu navegador. Con tu autorización, RetroBicio Stream Control consulta el nombre, la foto y el número de suscriptores de tu canal, lee el chat de tu directo, sus Super Chats y miembros, y envía al chat los mensajes que tú escribes o que BicioBot publica en tu nombre. RetroBicio nunca ve tu contraseña de Google.</p>
+      <p style="color:var(--dim);margin-bottom:0">Más detalles en la <a href="privacidad.html">Política de Privacidad</a> y las <a href="terminos.html">Condiciones del Servicio</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div><a class="brand" href="#"><img src="img/logo.webp" alt="">RetroBicio <b>Stream Control</b></a>
+    <p style="margin:10px 0 0">Hecho con 💜 para la comunidad retro · <a href="privacidad.html">Privacidad</a> · <a href="terminos.html">Condiciones</a></p></div>
+  <div class="socials">
+    <a href="https://www.twitch.tv/retrobicio" target="_blank" rel="noopener">Twitch</a><a href="https://www.youtube.com/@retrobicio" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.tiktok.com/@retrobicio" target="_blank" rel="noopener">TikTok</a><a href="https://www.instagram.com/retrobicio/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://x.com/retrobicio" target="_blank" rel="noopener">X</a><a href="https://discord.gg/MSKPTUG" target="_blank" rel="noopener">Discord</a>
+    <a href="https://ko-fi.com/retrobicio" target="_blank" rel="noopener">Ko-fi</a>
+  </div>
+</div></footer>
+
+<script>
+// pixel sprites (the same ones as the alert designer)
+const HEART = ["..XX...XX..", ".XXXX.XXXX.", "XXXXXXXXXXX", "XXXXXXXXXXX", ".XXXXXXXXX.", "..XXXXXXX..", "...XXXXX...", "....XXX....", ".....X....."];
+const STAR = [".....X.....", "....XXX....", "....XXX....", "XXXXXXXXXXX", ".XXXXXXXXX.", "..XXXXXXX..", "..XXXXXXX..", ".XXXX.XXXX.", ".XXX...XXX.", "XX.......XX"];
+function drawSprite(c, kind, f) {
+  const x = c.getContext("2d"); x.clearRect(0, 0, 16, 16);
+  const px = (X, Y, col) => { x.fillStyle = col; x.fillRect(X, Y, 1, 1); };
+  const bitmap = (rows, ox, oy, col, hi) => rows.forEach((r, j) => [...r].forEach((ch, i) => { if (ch === "X") px(ox + i, oy + j, (hi && hi(i, j)) || col); }));
+  if (kind === "moneda") {
+    const rx = [6.5, 4.5, 1.5, 4.5][f % 4];
+    for (let j = 0; j < 16; j++) for (let i = 0; i < 16; i++) {
+      const dx = (i + .5 - 8) / (rx + .5), dy = (j + .5 - 8) / 7.5, d = dx * dx + dy * dy; if (d > 1) continue;
+      px(i, j, f % 4 === 2 ? "#d4a017" : d > .62 ? "#b8860b" : (i < 8 && i > 8 - rx * .7 && j > 3 && j < 12) ? "#fff4a8" : "#ffd21f");
+    }
+  } else if (kind === "corazon") bitmap(HEART, 2, 3, f % 2 ? "#ff5a7a" : "#e8264b", (i, j) => (i === 1 || i === 2) && (j === 1 || j === 2) ? "#ffd0da" : null);
+  else bitmap(STAR, 2, 3, f % 2 ? "#fff6b0" : "#ffcc00", (i, j) => j === 3 && i > 3 && i < 7 ? "#ffffff" : null);
+}
+let frame = 0;
+setInterval(() => { frame++; document.querySelectorAll("canvas[data-s]").forEach(c => drawSprite(c, c.dataset.s, c.dataset.s === "moneda" ? frame : Math.floor(frame / 3))); }, 125);
+document.querySelectorAll("canvas[data-s]").forEach(c => drawSprite(c, c.dataset.s, 0));
+
+// image tabs
+function tabs(bar, img) {
+  const b = document.getElementById(bar), im = document.getElementById(img);
+  b.addEventListener("click", ev => {
+    const t = ev.target.closest("button"); if (!t) return;
+    b.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === t));
+    im.style.opacity = 0; setTimeout(() => { im.src = t.dataset.img; im.onload = () => im.style.opacity = 1; }, 250);
+  });
+}
+tabs("dtabs", "dimg"); tabs("stabs", "simg");
+// the phone alternates between the two kinds of story (game art / drawn by AI)
+const stories = ["img/historia.webp", "img/historia-charla.webp"]; let si = 0;
+setInterval(() => { const p = document.getElementById("pimg"); p.style.opacity = 0; setTimeout(() => { p.src = stories[++si % 2]; p.onload = () => p.style.opacity = 1; }, 350); }, 4500);
+
+// reveal on scroll
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold:.12 });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+// the latest version, from GitHub
+fetch("https://api.github.com/repos/vsalonsolar-gif/vsalonsolar-gif.github.io/releases/latest").then(r => r.ok ? r.json() : null)
+  .then(d => { if (d && d.tag_name) document.getElementById("ver").textContent = "ÚLTIMA VERSIÓN: " + d.tag_name.toUpperCase(); }).catch(() => {});
+</script>
 </body>
 </html>

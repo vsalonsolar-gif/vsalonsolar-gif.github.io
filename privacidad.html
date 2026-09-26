@@ -2,19 +2,20 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="google-site-verification" content="obw4HaK4PKOA8Q7ozUeAwvI2KsWQzbqhUxFps67ScB8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Política de Privacidad · RetroBicio Stream Control</title>
 <link rel="stylesheet" href="estilo.css">
+<link rel="icon" href="img/favicon.png">
 </head>
 <body>
 <header>
   <h1><a href="index.html"><span class="accent">RetroBicio</span> Stream Control</a></h1>
-  <p class="tagline">Política de Privacidad · Última actualización: 23 de septiembre de 2026</p>
+  <p class="tagline">Política de Privacidad · Última actualización: 26 de septiembre de 2026</p>
 </header>
 <main>
   <section class="card">
     <h2>1. Resumen</h2>
-    <p>RetroBicio Stream Control (“la aplicación”) es una aplicación de escritorio que funciona en tu propio computador. <b>No tenemos servidores</b>: la aplicación no envía tus datos a RetroBicio ni a terceros, salvo a las propias plataformas (Twitch, YouTube, TikTok) cuando tú las usas desde la aplicación.</p>
+    <p>RetroBicio Stream Control (“la aplicación”) es una aplicación de escritorio que funciona en tu propio computador y guarda tus datos en él. Algunas funciones usan el <b>servidor de BicioBot</b> (alojado en Cloudflare), que actúa solo como intermediario y no guarda tu información más allá de lo indicado en el punto 3. Tus datos no se venden, no se usan para publicidad y no se comparten salvo con los servicios necesarios para cada función.</p>
   </section>
 
   <section class="card">
@@ -31,21 +32,34 @@
   </section>
 
   <section class="card">
-    <h2>3. Cómo se usan los datos</h2>
-    <p>Los datos se usan <b>únicamente</b> para mostrar tu canal y tu chat dentro de la aplicación, leer mensajes en voz alta si lo activas, mostrar alertas y enviar al chat los mensajes que tú escribes. No se usan para publicidad, no se venden, no se comparten y no se usan para entrenar modelos de inteligencia artificial.</p>
-  </section>
-
-  <section class="card">
-    <h2>4. Dónde se guardan</h2>
+    <h2>3. El servidor de BicioBot</h2>
+    <p>Para que funcionen sin que tengas que crear cuentas ni claves, estas funciones pasan por el servidor de BicioBot:</p>
     <ul>
-      <li>Los permisos (tokens) de Google y Twitch se guardan cifrados en el <b>Administrador de credenciales de Windows</b> de tu computador.</li>
-      <li>El nombre, la foto y los suscriptores de tu canal se guardan en un archivo local de configuración dentro de la carpeta de la aplicación.</li>
-      <li>El chat se mantiene solo en memoria mientras la aplicación está abierta y se borra al cerrarla.</li>
+      <li><b>Comprobar que eres tú:</b> la aplicación envía tu permiso de acceso de Twitch o de Google al servidor, que lo usa <b>solo</b> para consultar el identificador de tu canal. No se guarda.</li>
+      <li><b>Mensajes de BicioBot en tu chat:</b> el texto del mensaje y el identificador de tu directo, para que la cuenta de BicioBot lo publique en tu chat de Twitch o YouTube.</li>
+      <li><b>Inteligencia artificial y voces:</b> los textos (y, si usas el copresentador por voz, el audio de tu pregunta) se envían a Google Gemini, Groq y Fish Audio para generar respuestas y voces. No se guardan en el servidor.</li>
+      <li><b>Imágenes de anuncios:</b> el nombre del juego y el título del directo se usan para buscar arte oficial en IGDB (Twitch) o dibujarlo con Cloudflare Workers AI. La imagen del anuncio se guarda <b>48 horas</b> en el servidor para que Instagram pueda recogerla.</li>
+      <li><b>Ko-fi:</b> si conectas Ko-fi, las donaciones que te envía Ko-fi llegan a un buzón privado del servidor para que la aplicación las recoja. Se guardan las últimas 30 durante un máximo de 7 días y después se borran solas.</li>
     </ul>
   </section>
 
   <section class="card">
-    <h2>5. Cómo revocar el acceso y borrar tus datos</h2>
+    <h2>4. Cómo se usan los datos</h2>
+    <p>Los datos se usan <b>únicamente</b> para mostrar tu canal y tu chat dentro de la aplicación, leer mensajes en voz alta si lo activas, mostrar alertas y enviar al chat los mensajes que tú escribes. No se usan para publicidad, no se venden, no se comparten y no se usan para entrenar modelos de inteligencia artificial.</p>
+  </section>
+
+  <section class="card">
+    <h2>5. Dónde se guardan</h2>
+    <ul>
+      <li>Los permisos (tokens) de Google y Twitch se guardan cifrados en el <b>Administrador de credenciales de Windows</b> de tu computador.</li>
+      <li>El nombre, la foto y los suscriptores de tu canal se guardan en un archivo local de configuración dentro de la carpeta de la aplicación.</li>
+      <li>El chat se mantiene en memoria mientras la aplicación está abierta. Para los puntos, las estadísticas, los créditos y la memoria de BicioBot se guardan en archivos locales los nombres de los espectadores de tu chat y datos de tus directos.</li>
+      <li>Las copias de seguridad automáticas se guardan en tu computador (sin claves ni permisos).</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>6. Cómo revocar el acceso y borrar tus datos</h2>
     <ul>
       <li>En la aplicación, pulsa <b>Desconectar</b> en YouTube: se borra el permiso guardado y se revoca ante Google.</li>
       <li>También puedes quitar el acceso en cualquier momento desde <a href="https://myaccount.google.com/permissions">la página de permisos de tu cuenta de Google</a>.</li>
@@ -54,13 +68,13 @@
   </section>
 
   <section class="card">
-    <h2>6. Servicios de YouTube y Google</h2>
+    <h2>7. Servicios de YouTube y Google</h2>
     <p>La aplicación usa los Servicios de la API de YouTube. Al conectar YouTube aceptas las <a href="https://www.youtube.com/t/terms">Condiciones del Servicio de YouTube</a>, y tus datos en Google se rigen por la <a href="https://policies.google.com/privacy">Política de Privacidad de Google</a>.</p>
     <p>El uso y la transferencia de la información recibida de las API de Google cumplen la <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de Datos de Usuario de los Servicios de API de Google</a>, incluidos los requisitos de Uso Limitado.</p>
   </section>
 
   <section class="card">
-    <h2>7. Contacto</h2>
+    <h2>8. Contacto</h2>
     <p>Si tienes preguntas sobre esta política, escribe a <a href="mailto:bahamut412@gmail.com">bahamut412@gmail.com</a>.</p>
   </section>
 </main>
