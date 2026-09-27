@@ -92,7 +92,7 @@
   .fade { transition:opacity .25s; }
   .alt { background:var(--bg2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
   .phone { width:270px; margin:0 auto; border-radius:34px; border:1px solid var(--line2); padding:10px; background:var(--card); box-shadow:0 30px 80px -30px rgba(0,0,0,.8); }
-  .phone img { border-radius:26px; }
+  .phone img { width:100%; height:auto; aspect-ratio:9 / 16; object-fit:cover; border-radius:26px; }       /* a phone: always 9:16 */
   .chat { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px; display:grid; gap:10px; }
   .msg { background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-size:14.5px; color:#d6d9e0; }
   .msg small { display:block; color:var(--dim2); font-size:12px; margin-bottom:2px; font-weight:600; }
@@ -202,7 +202,7 @@
       <li><svg class="i" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span>¿Te gustan los videojuegos? Convierte <b>hojas de sprites</b> en animaciones con el Estudio de Sprites.</span></li>
     </ul>
   </div>
-  <div class="reveal"><div class="frame"><img src="img/disenador-pro.webp" alt="Diseñador de alertas con plantillas, capas y línea de tiempo" width="1400" height="823" loading="lazy"></div></div>
+  <div class="reveal"><div class="frame"><img src="img/disenador-pro.webp" alt="Diseñador de alertas con plantillas, capas y línea de tiempo" width="1400" height="747" loading="lazy"></div></div>
 </div></section>
 
 <section><div class="wrap split rev">
