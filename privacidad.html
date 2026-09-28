@@ -10,48 +10,79 @@
 <body>
 <header>
   <h1><a href="index.html"><span class="accent">RetroBicio</span> Stream Control</a></h1>
-  <p class="tagline">Política de Privacidad · Última actualización: 26 de septiembre de 2026</p>
+  <p class="tagline">Política de Privacidad · Última actualización: 28 de septiembre de 2026</p>
 </header>
 <main>
   <section class="card">
     <h2>1. Resumen</h2>
-    <p>RetroBicio Stream Control (“la aplicación”) es una aplicación de escritorio que funciona en tu propio computador y guarda tus datos en él. Algunas funciones usan el <b>servidor de BicioBot</b> (alojado en Cloudflare), que actúa solo como intermediario y no guarda tu información más allá de lo indicado en el punto 3. Tus datos no se venden, no se usan para publicidad y no se comparten salvo con los servicios necesarios para cada función.</p>
+    <p>RetroBicio Stream Control (“la aplicación”) es una aplicación de escritorio que funciona en tu propio computador y guarda tus datos en él. Algunas funciones usan el <b>servidor de BicioBot</b> (alojado en Cloudflare), que actúa solo como intermediario y no guarda tu información más allá de lo indicado en esta política. Tus datos no se venden, no se usan para publicidad y solo se comparten con los destinatarios indicados en el punto 4, únicamente para prestar la función que tú usas.</p>
   </section>
 
   <section class="card">
     <h2>2. Datos a los que accede la aplicación</h2>
     <h3>YouTube (API de YouTube, con tu autorización de Google)</h3>
+    <p>La aplicación pide un único permiso de Google: <code>youtube.force-ssl</code> (“Ver, editar y eliminar de forma permanente tus videos, calificaciones, comentarios y subtítulos de YouTube”). Con él, y solo cuando tú usas cada función:</p>
     <ul>
-      <li>Datos públicos de tu canal: nombre, foto de perfil, identificador y número de suscriptores.</li>
-      <li>El identificador del chat de tu directo activo, para poder enviar los mensajes que tú escribes.</li>
-      <li>Los mensajes que tú escribes en la aplicación y decides enviar al chat de YouTube.</li>
+      <li><b>Tu canal:</b> nombre, foto de perfil, identificador y número de suscriptores, para mostrarlos en la aplicación.</li>
+      <li><b>El chat de tu directo:</b> se leen los mensajes (con el nombre y la foto de quien escribe, Super Chats y membresías) para mostrarlos, leerlos en voz alta si lo activas y lanzar alertas y comandos.</li>
+      <li><b>Mensajes que envías:</b> los mensajes que tú escribes en la aplicación y las respuestas de los comandos que tú configuras se publican en el chat de tu directo.</li>
+      <li><b>Moderación:</b> cuando tú lo pides (o la moderación automática que tú configuras), se borran mensajes, se silencia temporalmente a un espectador o se nombra moderador a BicioBot en tu directo.</li>
+      <li><b>Shorts:</b> cuando tú decides subir un Short, se publica en tu canal el video que eliges, con su título, descripción, miniatura y lista de reproducción.</li>
     </ul>
-    <p>La aplicación también muestra el chat público de tu directo (mensajes, nombres y fotos de los espectadores, Super Chats y membresías), que es información pública visible para cualquier persona que vea tu directo.</p>
-    <h3>Twitch y TikTok</h3>
-    <p>Con tu autorización de Twitch, la aplicación lee y envía mensajes al chat de tu canal. En TikTok solo lee el chat público de tu LIVE a partir de tu nombre de usuario.</p>
+    <p>La aplicación no accede a tu correo, contactos, historial de reproducción, datos de pago ni a ningún otro servicio de Google.</p>
+    <h3>Twitch, Kick y TikTok</h3>
+    <p>Con tu autorización de Twitch y de Kick, la aplicación lee y envía mensajes al chat de tu canal y usa las funciones que tú activas (alertas, recompensas, moderación). En TikTok solo lee el chat público de tu LIVE a partir de tu nombre de usuario.</p>
   </section>
 
   <section class="card">
     <h2>3. El servidor de BicioBot</h2>
     <p>Para que funcionen sin que tengas que crear cuentas ni claves, estas funciones pasan por el servidor de BicioBot:</p>
     <ul>
-      <li><b>Comprobar que eres tú:</b> la aplicación envía tu permiso de acceso de Twitch o de Google al servidor, que lo usa <b>solo</b> para consultar el identificador de tu canal. No se guarda.</li>
-      <li><b>Mensajes de BicioBot en tu chat:</b> el texto del mensaje y el identificador de tu directo, para que la cuenta de BicioBot lo publique en tu chat de Twitch o YouTube.</li>
-      <li><b>Inteligencia artificial y voces:</b> los textos (y, si usas el copresentador por voz, el audio de tu pregunta) se envían a Google Gemini, Groq y Fish Audio para generar respuestas y voces. No se guardan en el servidor.</li>
+      <li><b>Comprobar que eres tú:</b> la aplicación envía tu permiso de acceso de Twitch, Kick o Google al servidor, que lo usa <b>solo</b> para consultar el identificador de tu canal. No se guarda (ver el punto 5).</li>
+      <li><b>Mensajes de BicioBot en tu chat:</b> el texto del mensaje y el identificador de tu directo, para que la cuenta de BicioBot lo publique en tu chat de Twitch, Kick o YouTube. No se guardan.</li>
+      <li><b>Inteligencia artificial y voces:</b> si activas BicioBot IA o las voces, los textos (y, si usas el copresentador por voz, el audio de tu pregunta) se envían a Google Gemini, Groq y Fish Audio para generar respuestas y voces. No se guardan en el servidor.</li>
       <li><b>Imágenes de anuncios:</b> el nombre del juego y el título del directo se usan para buscar arte oficial en IGDB (Twitch) o dibujarlo con Cloudflare Workers AI. La imagen del anuncio se guarda <b>48 horas</b> en el servidor para que Instagram pueda recogerla.</li>
+      <li><b>Videos para Instagram Reels:</b> si publicas un Reel, el video se guarda <b>2 horas</b> en el servidor para que Instagram lo recoja, y después se borra solo.</li>
       <li><b>Ko-fi:</b> si conectas Ko-fi, las donaciones que te envía Ko-fi llegan a un buzón privado del servidor para que la aplicación las recoja. Se guardan las últimas 30 durante un máximo de 7 días y después se borran solas.</li>
+      <li><b>Informes de errores:</b> si la opción está activada (se puede desactivar en Ajustes → General), cuando el programa falla se envía qué falló y en qué parte del código, la versión de la aplicación y la de Windows. Antes de enviarse se eliminan tu usuario de Windows, correos, claves y tokens. No incluyen datos de tu cuenta de Google, de tu canal ni de tu chat. Se guardan 90 días.</li>
     </ul>
   </section>
 
   <section class="card">
-    <h2>4. Cómo se usan los datos</h2>
-    <p>Los datos se usan <b>únicamente</b> para mostrar tu canal y tu chat dentro de la aplicación, leer mensajes en voz alta si lo activas, mostrar alertas y enviar al chat los mensajes que tú escribes. No se usan para publicidad, no se venden, no se comparten y no se usan para entrenar modelos de inteligencia artificial.</p>
+    <h2>4. Con quién se comparten los datos de usuario de Google</h2>
+    <p>Los datos que la aplicación obtiene de tu cuenta de Google (a través de la API de YouTube) <b>solo</b> se comparten con estos destinatarios, solo para la función que tú usas y nunca para otros fines:</p>
+    <ul>
+      <li><b>Google / YouTube:</b> para realizar lo que tú pides (leer y enviar mensajes del chat, moderar, subir un Short). Los datos vuelven a Google a través de su propia API.</li>
+      <li><b>Servidor de BicioBot (Cloudflare Workers, operado por el desarrollador de RetroBicio):</b> recibe tu permiso de acceso de Google solo para comprobar el identificador de tu canal, y el texto y el identificador de tu directo para publicar los mensajes de BicioBot. Cloudflare actúa únicamente como proveedor de infraestructura. No se guardan.</li>
+      <li><b>Proveedores de inteligencia artificial (Google Gemini y Groq), solo si activas BicioBot IA:</b> reciben el mensaje del chat al que BicioBot va a responder y, como contexto, los últimos mensajes del chat (texto y nombre visible de quien los escribió) y el título y el juego de tu directo, para generar la respuesta. No reciben tu permiso de acceso ni ningún otro dato de tu cuenta.</li>
+      <li><b>Fish Audio, solo si usas sus voces:</b> recibe únicamente el texto que se va a leer en voz alta.</li>
+    </ul>
+    <p>Los datos de usuario de Google <b>no se venden</b>, no se ceden a anunciantes, plataformas de publicidad, intermediarios de datos ni revendedores de información, no se usan para publicidad personalizada, para valorar la solvencia ni para entrenar modelos de inteligencia artificial, y no se transfieren a nadie más, salvo que la ley lo exija o que tú lo autorices expresamente.</p>
   </section>
 
   <section class="card">
-    <h2>5. Dónde se guardan</h2>
+    <h2>5. Seguridad y protección de los datos sensibles</h2>
     <ul>
-      <li>Los permisos (tokens) de Google y Twitch se guardan cifrados en el <b>Administrador de credenciales de Windows</b> de tu computador.</li>
+      <li><b>Permisos de acceso cifrados:</b> los permisos (tokens) de Google, Twitch y Kick se guardan cifrados en el <b>Administrador de credenciales de Windows</b> de tu computador, protegidos por tu cuenta de Windows. Nunca se guardan en archivos de texto, en la configuración ni en las copias de seguridad.</li>
+      <li><b>Conexiones cifradas:</b> toda la comunicación con Google, con el servidor de BicioBot y con los demás servicios se hace por HTTPS (TLS).</li>
+      <li><b>El servidor no guarda tus permisos:</b> los usa en el momento para comprobar tu canal. Solo conserva en memoria temporal, un máximo de 10 minutos, un resumen irreversible (hash SHA-256) para no preguntar a Google en cada mensaje.</li>
+      <li><b>Solo tu canal:</b> el servidor comprueba que la petición viene de RetroBicio y que el canal es tuyo. BicioBot nunca puede escribir en un canal que no sea el tuyo, y hay límites de mensajes por minuto.</li>
+      <li><b>Claves protegidas:</b> las claves de la aplicación y de la cuenta de BicioBot se guardan como secretos cifrados de Cloudflare y no están dentro del programa. Solo el desarrollador puede acceder al servidor, con su cuenta protegida.</li>
+      <li><b>Mínimo necesario:</b> se pide un único permiso de Google y solo se usa para las funciones descritas. La aplicación no tiene cuentas de usuario ni base de datos central con tus datos.</li>
+      <li><b>Borrado automático:</b> lo poco que el servidor guarda temporalmente se borra solo (imágenes a las 48 horas, videos a las 2 horas, donaciones de Ko-fi a los 7 días, informes de errores a los 90 días).</li>
+      <li><b>Incidentes:</b> si alguna vez hubiera un problema de seguridad que afectara a tus datos, se avisará en esta web y por el canal de contacto.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>6. Cómo se usan los datos</h2>
+    <p>Los datos se usan <b>únicamente</b> para prestar las funciones que tú usas: mostrar tu canal y tu chat dentro de la aplicación, leer mensajes en voz alta si lo activas, mostrar alertas, responder a comandos, moderar tu chat, enviar los mensajes que tú escribes y subir los Shorts que tú eliges. No se usan para publicidad, no se venden y no se usan para entrenar modelos de inteligencia artificial.</p>
+  </section>
+
+  <section class="card">
+    <h2>7. Dónde se guardan</h2>
+    <ul>
+      <li>Los permisos (tokens) se guardan cifrados en el Administrador de credenciales de Windows de tu computador (ver el punto 5).</li>
       <li>El nombre, la foto y los suscriptores de tu canal se guardan en un archivo local de configuración dentro de la carpeta de la aplicación.</li>
       <li>El chat se mantiene en memoria mientras la aplicación está abierta. Para los puntos, las estadísticas, los créditos y la memoria de BicioBot se guardan en archivos locales los nombres de los espectadores de tu chat y datos de tus directos.</li>
       <li>Las copias de seguridad automáticas se guardan en tu computador (sin claves ni permisos).</li>
@@ -59,23 +90,24 @@
   </section>
 
   <section class="card">
-    <h2>6. Cómo revocar el acceso y borrar tus datos</h2>
+    <h2>8. Cómo revocar el acceso y borrar tus datos</h2>
     <ul>
       <li>En la aplicación, pulsa <b>Desconectar</b> en YouTube: se borra el permiso guardado y se revoca ante Google.</li>
       <li>También puedes quitar el acceso en cualquier momento desde <a href="https://myaccount.google.com/permissions">la página de permisos de tu cuenta de Google</a>.</li>
       <li>Para borrar todos los datos locales, desconecta las plataformas y elimina la carpeta de la aplicación.</li>
+      <li>Para pedir que se borre cualquier dato temporal del servidor antes de su plazo, escribe al contacto del punto 10.</li>
     </ul>
   </section>
 
   <section class="card">
-    <h2>7. Servicios de YouTube y Google</h2>
+    <h2>9. Servicios de YouTube y Google</h2>
     <p>La aplicación usa los Servicios de la API de YouTube. Al conectar YouTube aceptas las <a href="https://www.youtube.com/t/terms">Condiciones del Servicio de YouTube</a>, y tus datos en Google se rigen por la <a href="https://policies.google.com/privacy">Política de Privacidad de Google</a>.</p>
-    <p>El uso y la transferencia de la información recibida de las API de Google cumplen la <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de Datos de Usuario de los Servicios de API de Google</a>, incluidos los requisitos de Uso Limitado.</p>
+    <p>El uso y la transferencia a cualquier otra aplicación de la información recibida de las API de Google cumplen la <a href="https://developers.google.com/terms/api-services-user-data-policy">Política de Datos de Usuario de los Servicios de API de Google</a>, incluidos los requisitos de Uso Limitado.</p>
   </section>
 
   <section class="card">
-    <h2>8. Contacto</h2>
-    <p>Si tienes preguntas sobre esta política, escribe a <a href="mailto:bahamut412@gmail.com">bahamut412@gmail.com</a>.</p>
+    <h2>10. Contacto</h2>
+    <p>Si tienes preguntas sobre esta política o sobre tus datos, escribe a <a href="mailto:bahamut412@gmail.com">bahamut412@gmail.com</a>.</p>
   </section>
 </main>
 <footer>
